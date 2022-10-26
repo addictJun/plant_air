@@ -1,0 +1,536 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+li {
+  list-style: none;
+}
+/* 声明字体*/
+@font-face {
+  font-family: electronicFont;
+  src: url(../font/DS-DIGIT.TTF);
+}
+html {
+  overflow: hidden;
+}
+body {
+  background-image: linear-gradient(to right top, #44474c, #5b6367, #768181, #959f99, #babdb3);
+  height: 100%;
+  background-attachment: fixed;
+}
+header {
+  position: relative;
+  height: 1.25rem;
+  background: url(../images/head_bg.png) no-repeat;
+  background-size: 100% 100%;
+}
+header h1 {
+  font-size: 0.475rem;
+  color: #fff;
+  text-align: center;
+  line-height: 1rem;
+}
+header .showtime {
+  position: absolute;
+  right: 0.375rem;
+  top: 0;
+  line-height: 0.9375rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.25rem;
+}
+.mainbox {
+  display: flex;
+  min-width: 12.8rem;
+  max-width: 24rem;
+  padding: 0.125rem 0.125rem 0;
+  font-family: "Tahoma";
+}
+.mainbox .column {
+  flex: 9;
+  width: 100%;
+  display: flex;
+  position: relative;
+}
+.mainbox .column .column2 {
+  margin-top: 0.3rem;
+  padding: 0.125rem 0.125rem;
+  width: 100%;
+  display: none;
+  position: absolute;
+}
+.mainbox .column .column2 .MajorPollutant {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+}
+.mainbox .column .column2 .MajorPollutant .Pollutant {
+  flex: 10;
+  position: relative;
+  background: url("../images/line\(1\).png");
+}
+.mainbox .column .column2 .MajorPollutant .Pollutant::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  border-left: 2px solid #02a6b5;
+  border-top: 2px solid #02a6b5;
+  content: "";
+}
+.mainbox .column .column2 .MajorPollutant .Pollutant::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid #02a6b5;
+  border-top: 2px solid #02a6b5;
+  content: "";
+}
+.mainbox .column .column2 .MajorPollutant .Pollutant .Pollutant-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+.mainbox .column .column2 .MajorPollutant .Pollutant .Pollutant-footer::before {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  border-left: 2px solid #02a6b5;
+  border-bottom: 2px solid #02a6b5;
+  content: "";
+}
+.mainbox .column .column2 .MajorPollutant .Pollutant .Pollutant-footer::after {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid #02a6b5;
+  border-bottom: 2px solid #02a6b5;
+  content: "";
+}
+.mainbox .column .column2 .MajorPollutant .Pollutant .ChartAQI {
+  width: 13.8rem;
+  height: 5.4rem;
+}
+.mainbox .column .column2 .MajorPollutant .Pollutant:nth-child(2) {
+  margin-top: 0.2rem;
+}
+.mainbox .column .column1 {
+  flex: 3;
+  padding: 0.125rem 0.125rem;
+  margin-top: 0.3rem;
+}
+.mainbox .column:nth-child(2) {
+  flex: 6;
+  flex-flow: column;
+  margin: 0.3rem 0.125rem 0.1875rem;
+}
+.mainbox .panel {
+  position: relative;
+  height: 2.5rem;
+  padding: 0 0.1875rem 0.5rem;
+  border: 1px splid rgba(25, 186, 239, 0.17);
+  margin-bottom: 0.1875rem;
+  background: url(../images/line\(1\).png) rgba(255, 255, 255, 0.05);
+}
+.mainbox .panel::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  border-left: 2px solid #02a6b5;
+  border-top: 2px solid #02a6b5;
+  content: "";
+}
+.mainbox .panel::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid #02a6b5;
+  border-top: 2px solid #02a6b5;
+  content: "";
+}
+.mainbox .panel .panel-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+.mainbox .panel .panel-footer::before {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  border-left: 2px solid #02a6b5;
+  border-bottom: 2px solid #02a6b5;
+  content: "";
+}
+.mainbox .panel .panel-footer::after {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid #02a6b5;
+  border-bottom: 2px solid #02a6b5;
+  content: "";
+}
+.mainbox .panel h2 {
+  height: 0.6rem;
+  color: #fff;
+  line-height: 0.6rem;
+  text-align: center;
+  font-size: 0.5rem;
+  font-weight: 300;
+  padding: 3px 3px;
+  margin-bottom: 0.1875rem;
+  font-family: "Tahoma";
+  opacity: 0.8;
+}
+.mainbox .panel h3 {
+  height: 0.4rem;
+  color: #fff;
+  line-height: 0.4rem;
+  text-align: center;
+  font-size: 0.375rem;
+  font-weight: 200;
+  padding: 3px 3px;
+  margin-top: 0.2rem;
+  font-family: "Tahoma";
+  opacity: 0.8;
+}
+.mainbox .panel .chart {
+  position: relative;
+  height: 3rem;
+  padding-top: 0.1rem;
+}
+.mainbox .panel .chart::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.7);
+  content: "";
+}
+.row {
+  margin: 0 0.125rem 0.1875rem;
+}
+.row:nth-child(1) {
+  display: flex;
+  height: 3.5rem;
+}
+.row:nth-child(1) .pingjia {
+  flex: 3;
+}
+.row:nth-child(1) .pingjia:nth-child(1) {
+  margin-right: 3px;
+}
+.row:nth-child(2) {
+  display: flex;
+  height: 2rem;
+  justify-content: center;
+  align-items: center;
+}
+.row:nth-child(3) {
+  height: 3rem;
+  border-top: 2px dashed rgba(255, 255, 255, 0.7);
+  position: relative;
+  flex: 4;
+  margin: 0 0.125rem 0.125rem;
+}
+.pingjia {
+  padding-bottom: 0.1rem;
+}
+.pingjia h3 {
+  font-family: "Tahoma";
+  color: greenyellow;
+  font-weight: 500;
+  font-size: 1rem;
+  margin-top: 0.1rem;
+}
+.pingjia h2 {
+  font-family: "Tahoma";
+  color: #fff;
+  font-weight: 400;
+  font-size: 0.3rem;
+  margin-top: 0.1rem;
+}
+.pingjia h1 {
+  height: 1rem;
+  color: #fff;
+  line-height: 1rem;
+  text-align: center;
+  font-size: 0.5rem;
+  font-weight: 400;
+  font-family: "Tahoma";
+  margin-top: 0.8rem;
+}
+.tianqi {
+  flex: 2;
+  width: 80%;
+  height: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50px;
+  padding-top: 2%;
+  padding-bottom: 3%;
+}
+.tianqi h2 {
+  margin-left: 0.6rem;
+  font-family: "Tahoma";
+  color: #fff;
+  font-weight: 400;
+  font-size: 0.4rem;
+}
+.tianqi p {
+  color: #fff;
+  font-family: "Tahoma";
+  font-weight: 200;
+  margin-left: 0.9rem;
+  margin-top: 1%;
+  width: 80%;
+  font-size: 0.3rem;
+}
+.kepu1 {
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: absolute;
+  z-index: 2;
+}
+.kepu1 .yansetiao {
+  margin-top: 0.7rem;
+  width: 100%;
+  height: 10%;
+}
+.kepu1 .yansetiao ul {
+  display: flex;
+}
+.kepu1 .yansetiao ul li {
+  flex: 1;
+  width: 100%;
+  height: 0.3rem;
+}
+.kepu1 .yansetiao ul li:nth-child(1) {
+  background-color: rgba(0, 190, 0, 0.7);
+}
+.kepu1 .yansetiao ul li:nth-child(2) {
+  background-color: rgba(255, 240, 0, 0.7);
+}
+.kepu1 .yansetiao ul li:nth-child(3) {
+  background-color: rgba(255, 130, 0, 0.7);
+}
+.kepu1 .yansetiao ul li:nth-child(4) {
+  background-color: rgba(255, 0, 0, 0.7);
+}
+.kepu1 .yansetiao ul li:nth-child(5) {
+  background-color: rgba(165, 15, 75, 0.7);
+}
+.kepu1 .yansetiao ul li:nth-child(6) {
+  background-color: rgba(135, 15, 35, 0.7);
+}
+.kepu1 .yansetiao .tixing {
+  display: flex;
+  width: 100%;
+  height: 0.1rem;
+}
+.kepu1 .yansetiao .tixing .number {
+  flex: 1;
+}
+.kepu1 .yansetiao .tixing .number p {
+  color: #fff;
+  font-family: "Tahoma";
+  font-size: 0.1rem;
+}
+.kepu1 .yansetiao .shuzi {
+  display: flex;
+  margin-top: 0.5rem;
+  width: 100%;
+  height: 2.7rem;
+}
+.kepu1 .yansetiao .shuzi .geli {
+  flex: 1;
+}
+.kepu1 .yansetiao .shuzi .geli p {
+  color: #fff;
+  font-family: "Tahoma";
+  margin-left: 43%;
+  width: 0.3rem;
+  font-size: 0.3rem;
+}
+.kepu2 {
+  width: 100%;
+  height: 5rem;
+  z-index: 1;
+  display: none;
+  position: absolute;
+}
+.kepu2 .waitao {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+}
+.kepu2 .waitao .qiti {
+  flex: 4;
+  margin-top: 0.1rem;
+  display: flex;
+  position: relative;
+}
+.kepu2 .waitao .qiti:nth-child(1) .one {
+  flex: 3;
+}
+.kepu2 .waitao .qiti:nth-child(1) .one:nth-child(1) {
+  flex: 4;
+}
+.kepu2 .waitao .qiti:nth-child(1) .one:nth-child(2) {
+  flex: 2;
+  height: 1.1rem;
+}
+.kepu2 .waitao .qiti:nth-child(1) .one:nth-child(2) .yuan {
+  float: right;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.1rem;
+  text-align: right;
+  border: 1px solid greenyellow;
+  border-radius: 50%;
+}
+.kepu2 .waitao .qiti:nth-child(1) .one:nth-child(2) .yuan p {
+  text-align: center;
+  line-height: 1rem;
+  font-size: 0.1rem;
+  font-weight: 500;
+  color: greenyellow;
+}
+.kepu2 .waitao .qiti:nth-child(1) .one:nth-child(3) {
+  flex: 4;
+}
+.kepu2 .waitao .qiti:nth-child(2) .two {
+  flex: 3;
+}
+.kepu2 .waitao .qiti:nth-child(2) .two:nth-child(1) {
+  flex: 1;
+}
+.kepu2 .waitao .qiti:nth-child(2) .two:nth-child(2) {
+  flex: 2;
+  height: 1.1rem;
+}
+.kepu2 .waitao .qiti:nth-child(2) .two:nth-child(2) .yuan {
+  float: right;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.1rem;
+  text-align: right;
+  border: 1px solid greenyellow;
+  border-radius: 50%;
+}
+.kepu2 .waitao .qiti:nth-child(2) .two:nth-child(2) .yuan p {
+  text-align: center;
+  line-height: 1rem;
+  font-size: 0.25rem;
+  font-weight: 600;
+  color: greenyellow;
+}
+.kepu2 .waitao .qiti:nth-child(2) .two:nth-child(3) {
+  flex: 7;
+}
+.kepu2 .waitao .qiti:nth-child(3) .three {
+  flex: 3;
+}
+.kepu2 .waitao .qiti:nth-child(3) .three:nth-child(1) {
+  flex: 4;
+}
+.kepu2 .waitao .qiti:nth-child(3) .three:nth-child(2) {
+  flex: 2;
+  height: 1.1rem;
+}
+.kepu2 .waitao .qiti:nth-child(3) .three:nth-child(2) .yuan {
+  float: right;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.1rem;
+  text-align: right;
+  border: 1px solid greenyellow;
+  border-radius: 50%;
+}
+.kepu2 .waitao .qiti:nth-child(3) .three:nth-child(2) .yuan p {
+  text-align: center;
+  line-height: 1rem;
+  font-size: 0.23rem;
+  font-weight: 600;
+  color: greenyellow;
+}
+.kepu2 .waitao .qiti:nth-child(3) .three:nth-child(3) {
+  flex: 4;
+}
+.kepu2 .waitao .qiti:nth-child(4) .four {
+  flex: 3;
+}
+.kepu2 .waitao .qiti:nth-child(4) .four:nth-child(1) {
+  flex: 1;
+}
+.kepu2 .waitao .qiti:nth-child(4) .four:nth-child(2) {
+  flex: 2;
+  height: 1.1rem;
+}
+.kepu2 .waitao .qiti:nth-child(4) .four:nth-child(2) .yuan {
+  float: right;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.1rem;
+  text-align: right;
+  border: 1px solid greenyellow;
+  border-radius: 50%;
+}
+.kepu2 .waitao .qiti:nth-child(4) .four:nth-child(2) .yuan p {
+  text-align: center;
+  line-height: 1rem;
+  font-size: 0.25rem;
+  font-weight: 600;
+  color: greenyellow;
+}
+.kepu2 .waitao .qiti:nth-child(4) .four:nth-child(3) {
+  flex: 7;
+}
+.kepu2 h1 {
+  color: #fff;
+  font-weight: 400;
+  font-size: 0.35rem;
+}
+.kepu2 h2 {
+  margin-top: 0.2rem;
+  color: #fff;
+  font-size: 0.3rem;
+  font-weight: 500;
+  font-family: "Tahoma";
+}
+.kepu2 h3 {
+  color: #fff;
+  font-size: 0.25rem;
+  font-weight: 400;
+  font-family: "Tahoma";
+  position: relative;
+  opacity: 0.8;
+}
+.kepu2 h3::before {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 3.5rem;
+  height: 1px;
+  background: greenyellow;
+  content: "";
+}
