@@ -23,7 +23,7 @@ class DataAir:
 
         print(str_data)
 
-        self.AQI_list = {'o3':48,'so2':64,'no2':46,'pm10':0,'pm25':0}   #六参
+        self.AQI_list = {'o3':48,'so2':64,'no2':46,'co':28}   #六参
         self.EPS = 0.00001
         self.result = {}
 
@@ -36,8 +36,6 @@ class DataAir:
                 self.result[name] = 0.0
             elif name in self.AQI_list.keys():
                 self.result[name] = self.unit(float(value), self.AQI_list[name])
-            elif name == 'co':
-                self.result[name] = self.unit(float(value)/1000,28)
             else:
                 self.result[name] = float(value)
         
@@ -84,24 +82,24 @@ class TcpServer:
 
 if __name__ == "__main__":
 
-    str_data ="co:-999.000000,02:-999.000000,ch4:-999.000000,o3:-999.000000,h2s:-999.000000,so2:-999.000000,nh3:-999.000000,no2:-999.000000,No:-999.000000,pm1:-999.000000,pm10:-999.000000,pm25:-999.000000,humid:-999.000000,temper:-999.000000,co2:-999.000000"
+    str_data ="co:1,o2:-999.000000,ch4:-999.000000,o3:12,h2s:-999.000000,so2:-999.000000,nh3:-999.000000,no2:-999.000000,no:-999.000000,pm1:-999.000000,pm10:-999.000000,pm25:25,humid:-999.000000,temper:-999.000000,co2:-999.000000"
     data = DataAir(str_data)
     print(data.result)
-    c = TcpServer('192.168.8.1',9989)
-    c.tcpInit()
-    c.tcpBind()
-    c.tcpListen()
-    fd_client,client_addr = c.tcpAccept()
+    # c = TcpServer('192.168.8.1',9989)
+    # c.tcpInit()
+    # c.tcpBind()
+    # c.tcpListen()
+    # fd_client,client_addr = c.tcpAccept()
 
-    i= 0 
-    while i<200:
+    # i= 0 
+    # while i<200:
 
-        recv_data = c.tcpRecv(fd_client) 
-        print(DataAir(recv_data.decode()).result)
-        time.sleep(0.5)
-        i+=1
-        print(i)
-    c.tcpClose(fd_client)
+    #     recv_data = c.tcpRecv(fd_client) 
+    #     print(DataAir(recv_data.decode()).result)
+    #     time.sleep(0.5)
+    #     i+=1
+    #     print(i)
+    # c.tcpClose(fd_client)
 
 
 
