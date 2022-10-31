@@ -21,8 +21,8 @@ class DataMysql(Mysql):
                        'co':[0,5,10,35,60,90,120,150],
                        'pm25':[0,35,75,115,150,250,350,500],
                        'pm10':[0,50,150,250,350,420,500,600]}
-        self.now_time = self.__GetTime()
-        self.__ClearHoursData()  #清楚上次数据的缓存
+        self.now_time =  0   #self.__GetTime()
+        # self.__ClearHoursData()  #清楚上次数据的缓存
 
     '''存储小时数据'''
     def StorageHourData(self,data):
@@ -32,10 +32,10 @@ class DataMysql(Mysql):
         else:
             self.now_time = current_time #赋值
             self.__StorageAQIData() #触发AQI表格
-            self.__ClearHoursData() # 清空表格
+            # self.__ClearHoursData() # 清空表格
             self.__StorageData(data) #存进新的数据
         #----------------测试阶段的代码-----------------
-        print(self.__GetAllAQIData('aqi').tail())
+        print(self.__GetAllAQIData('iaqi').tail())
         print(self.__GetAllData('hours').tail())
 
     '''读取hours数据'''
@@ -63,7 +63,7 @@ class DataMysql(Mysql):
     '''找到主要污染物'''
     def FindPollData(self):
         res = []
-        data = self.__GetAllAQIData('aqi') #获取全部的数据
+        data = self.__GetAllAQIData('iaqi') #获取全部的数据
         max_poll = data.drop(['TIME',"aqi"],axis=1).copy()
         time_list = list(data['TIME'])
         for i in range(24):   #0-23
@@ -80,7 +80,7 @@ class DataMysql(Mysql):
     '''提取主界面'''
     def FindMainData(self):
         res = []
-        data1 = self.__GetAllAQIData('aqi')
+        data1 = self.__GetAllAQIData('iaqi')
         data2 = self.FindMaxData()
         res.append(self.__GetAqiRank(data1.mean().loc['aqi']))
         res.append(data1.drop(['TIME',"aqi"],axis=1).mean().idxmax())
@@ -94,7 +94,7 @@ class DataMysql(Mysql):
             'aqi':[],
             'poll':[]
         }
-        data = self.__GetAllAQIData('aqi') #获取全部的数据
+        data = self.__GetAllAQIData('iaqi') #获取全部的数据
         max_poll = data.drop(['TIME',"aqi"],axis=1).copy()
         time_list = list(data['TIME'])
         for i in range(24):   #0-23
@@ -127,31 +127,39 @@ class DataMysql(Mysql):
         doucent_time = int(data['TIME'][0])
         Table = data.drop(['TIME'], axis = 1).mean()  #2. 计算平均值
         AQI_value = self.__GetAQI(Table.to_dict())    # 计算AQI
-        res = (str(doucent_time),AQI_value,Table.loc['pm25'],Table.loc['pm10'],Table.loc['so2'],Table.loc['co'],Table.loc['no2'],Table.loc['o3'])
-        self.__StorageAQI(res) # 存储
+        res1 = (str(doucent_time),max(AQI_value),Table.loc['pm25'],Table.loc['pm10'],Table.loc['so2'],Table.loc['co'],Table.loc['no2'],Table.loc['o3'])
+        res2 = (str(doucent_time),max(AQI_value),AQI_value[0],AQI_value[1],AQI_value[2],AQI_value[3],AQI_value[4],AQI_value[5])
+        self.__StorageAQI(res1, res2) # 存储
 
     '''计算AQI指标'''
     def __GetAQI(self,data):
         IAQI_list = [self.__GetIAQI(i,data[i]) for i in self.can6_cloumns]
-        # print("IAQI_list",max(IAQI_list))
-        return max(IAQI_list)
+        print("IAQI_list",IAQI_list)
+        return IAQI_list
 
     '''存储AQI数据'''
-    def __StorageAQI(self,res):
-        if self.__IsTimeTable(res[0]):  #存在
-            self.__UpdateAqi(res)
+    def __StorageAQI(self,res1,res2):
+        if self.__IsTimeTable(res1[0]):  #存在
+            self.__UpdateAqi(res1,res2)
         else: #存在
-            self.__InputAqi(res)
+            self.__InputAqi(res1,res2)
 
     '''更新数据'''
-    def __UpdateAqi(self, res):
-        sql = f"update aqi set aqi={res[1]},pm25={res[2]},pm10={res[3]},so2={res[4]},co={res[5]},no2={res[6]},o3={res[7]} where TIME={res[0]}"
+    def __UpdateAqi(self, res1,res2):
+        sql = f"update aqi set aqi={res1[1]},pm25={res1[2]},pm10={res1[3]},so2={res1[4]},co={res1[5]},no2={res1[6]},o3={res1[7]} where TIME={res1[0]}"
+        self.SqlExecute(sql)
+        self.Close()
+        # sql = "insert into iaqi(TIME,aqi,pm25,pm10,so2,co,no2,o3) values"+str(res2)
+        sql = f"update iaqi set aqi={res2[1]},pm25={res2[2]},pm10={res2[3]},so2={res2[4]},co={res2[5]},no2={res2[6]},o3={res2[7]} where TIME={res2[0]}"
         self.SqlExecute(sql)
         self.Close()
 
     '''插入aqi数据'''
-    def __InputAqi(self,res):
-        sql = "insert into aqi(TIME,aqi,pm25,pm10,so2,co,no2,o3) values"+str(res)
+    def __InputAqi(self,res1,res2):
+        sql = "insert into aqi(TIME,aqi,pm25,pm10,so2,co,no2,o3) values"+str(res1)
+        self.SqlExecute(sql)
+        self.Close()
+        sql = "insert into iaqi(TIME,aqi,pm25,pm10,so2,co,no2,o3) values"+str(res2)
         self.SqlExecute(sql)
         self.Close()
 
@@ -175,10 +183,11 @@ class DataMysql(Mysql):
                     * (value - self.canshu[name][index]) + self.IAQI[index]
         else:
             IAQI = self.IAQI[index]
-        # print("__GetIAQI",index, name, value,IAQI)
+        print("__GetIAQI",index, name, value,IAQI)
         return IAQI
 
     def __GetAqiRank(self,value):
+        index = 0
         for i in range(len(self.IAQI)):
             if value >= self.IAQI[i]:
                 index = i
@@ -274,8 +283,8 @@ if __name__ == "__main__":
     # else:
     #     print("创建失败")
 
-    # #创建AQI表
-    # sql = """CREATE TABLE aqi( TIME CHAR(20) not null primary key,
+    # #创建IAQI表
+    # sql = """CREATE TABLE iaqi( TIME CHAR(20) not null primary key,
     #                             aqi float,
     #                             pm25 float,
     #                             pm10 float,
@@ -289,7 +298,9 @@ if __name__ == "__main__":
     # else:
     #     print("创建失败")
 
-    data = {'co': 4.0, 'o2': 2.0, 'ch4': 3.0, 'o3': 0.0, 'h2s': 0.0, 'so2': 0.0, 'nh3': 0.0, 'no2': 4.0, 'no': 0.0, 'pm1': 0.0, 'pm10': 0.0, 'pm25': 0.0, 'humid': 0.0, 'temper': 0.0, 'co2': 0.0}
+
+
+    data = {'co': 9.0, 'o2': 2.0, 'ch4': 3.0, 'o3': 120.0, 'h2s': 0.0, 'so2': 0.0, 'nh3': 0.0, 'no2': 4.0, 'no': 0.0, 'pm1': 0.0, 'pm10': 0.0, 'pm25': 0.0, 'humid': 0.0, 'temper': 0.0, 'co2': 0.0}
     mysql.StorageHourData(data)
     print(mysql.FindMaxData())
     print(mysql.FindAQIData())
