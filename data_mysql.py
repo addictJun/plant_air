@@ -21,8 +21,8 @@ class DataMysql(Mysql):
                        'co':[0,5,10,35,60,90,120,150],
                        'pm25':[0,35,75,115,150,250,350,500],
                        'pm10':[0,50,150,250,350,420,500,600]}
-        self.now_time =  0   #self.__GetTime()
-        # self.__ClearHoursData()  #清楚上次数据的缓存
+        self.now_time =  self.__GetTime()
+        self.__ClearHoursData()  #清楚上次数据的缓存
 
     '''存储小时数据'''
     def StorageHourData(self,data):
@@ -32,7 +32,7 @@ class DataMysql(Mysql):
         else:
             self.now_time = current_time #赋值
             self.__StorageAQIData() #触发AQI表格
-            # self.__ClearHoursData() # 清空表格
+            self.__ClearHoursData() # 清空表格
             self.__StorageData(data) #存进新的数据
         #----------------测试阶段的代码-----------------
         print(self.__GetAllAQIData('iaqi').tail())
