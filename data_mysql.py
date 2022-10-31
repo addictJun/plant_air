@@ -232,7 +232,9 @@ class DataMysql(Mysql):
         
         try:
             data['TIME'] = self.now_time
-            res = (data['TIME'],data['pm25'],data['pm10'],data['so2'],data['co'],data['no2'],data['o3'],data['o2'],data['co2'],data['ch4'],data['h2s'],data['humid'],data['temper'])
+            res = (data['TIME'],self.__ToNum(data['pm25']),self.__ToNum(data['pm10']),self.__ToNum(data['so2']),self.__ToNum(data['co']),self.__ToNum(data['no2']), \
+                    self.__ToNum(data['o3']),self.__ToNum(data['o2']),self.__ToNum(data['co2']),self.__ToNum(data['ch4']),self.__ToNum(data['h2s']),self.__ToNum(data['humid']), \
+                        self.__ToNum(data['temper']))
         except KeyError:
             print("数据中没有该数据")
             return;
@@ -243,6 +245,10 @@ class DataMysql(Mysql):
     '''获取时间'''
     def __GetTime(self):
         return time.localtime(time.time())[3]
+
+    """数据类型转换"""
+    def __ToNum(self,val):
+        return int(val*10)/10
 
 if __name__ == "__main__":
     mysql = DataMysql()
